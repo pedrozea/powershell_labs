@@ -47,7 +47,7 @@ $MisArchivos | sort -Property CreationTime -Descending | Format-Table Name,Creat
 
 1..10 | foreach {if ($_%2){"El numero $_ es impar"}}
 
-###Strings
+###Arrays
 
 $stringcomputers = @("Server1","Server2","Server3")
 
@@ -61,3 +61,58 @@ $stringlaptops = @("Laptop1","Laptop2")
 
 $equipos = $stringcomputers + $stringlaptops
 
+
+$MyFiles | Where-Object {$_.Length -gt 1000000} |Sort-Object -Property CreationTime -Descending | Format-List Name,CreationTime
+
+
+### Hash Tables (Diccionarios)
+$futnumbers = @{"Leo Messi" = 010; "Cristiano Ronaldo" = 007; "Luis Suarez" = 009}
+
+
+## FORMAT OPTIONS
+
+$MisArchivos | Format-Wide
+
+$MisArchivos | Format-List
+
+$MisArchivos | Format-List -Property Name,Length
+
+$MisArchivos | Where-Object {$_.Name -like "*.pdf"} | Sort-Object -Descending | Format-Table -Property Name,CreationTime
+
+Get-Process | Sort-Object -Property Company | Format-Table -Property Name,ID,Path -GroupBy Company
+
+
+## OUTPUTS
+
+Get-Process | Out-File "Path to new file.txt"
+
+dir C:\Users\pedro.zea\new*.*
+
+Get-Process | ConvertTo-Html | Out-File procesos.html
+
+Invoke-Expression path_file\procesos.html
+
+Get-Process | Export-Csv Procesos.csv
+
+Invoke-Expression .\Procesos.csv
+
+
+## IMPORTS
+
+Get-Location
+
+$nombres = Import-Csv .\Census1000.csv
+
+
+## EXERCICE
+
+#Option1
+$nombres | Sort-Object -Property pcthispanic -Descending | Select -First 1 | Format-Table Name,pcthispanic 
+
+$nombres | Sort-Object -Property pcthispanic -Descending | Select -First 10 | Format-Table Name,pcthispanic 
+
+#Option2
+($nombres | Sort-Object -Property pcthispanic -Descending)[0].name
+
+#option3
+$nombres | foreach {if($_.pcthispanic -gt $highest.pcthispanic) {$highest = $_}}
